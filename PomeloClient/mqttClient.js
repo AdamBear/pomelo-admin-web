@@ -199,30 +199,31 @@ MqttClient.prototype.setupKeepAlive = function() {
 
     var self = this;
     this.keepaliveTimer = setInterval(function() {
-        self.checkKeepAlive();
+        self.checkKeepAlive(self);
     }, this.keepalive);
 }
 
-MqttClient.prototype.checkKeepAlive = function() {
-    if (this.closed) {
+MqttClient.prototype.checkKeepAlive = function(self) {
+    if (self.closed || !self.socket) {
         return;
     }
 
+
     var now = Date.now();
-    var KEEP_ALIVE_TIMEOUT = this.keepalive * 2;
-    if (this.lastPing > 0) {
-        if (this.lastPong < this.lastPing) {
-            if (now - this.lastPing > KEEP_ALIVE_TIMEOUT) {
+    var KEEP_ALIVE_TIMEOUT = self.keepalive * 2;
+    if (self.lastPing > 0) {
+        if (self.lastPong < self.lastPing) {
+            if (now - self.lastPing > KEEP_ALIVE_TIMEOUT) {
                 console.error('mqtt rpc client checkKeepAlive error timeout for %d', KEEP_ALIVE_TIMEOUT);
-                this.close();
+                self.close();
             }
         } else {
-            this.socket.pingreq();
-            this.lastPing = Date.now();
+            self.socket.pingreq();
+            self.lastPing = Date.now();
         }
     } else {
-        this.socket.pingreq();
-        this.lastPing = Date.now();
+        self.socket.pingreq();
+        self.lastPing = Date.now();
     }
 }
 
@@ -238,7 +239,7 @@ MqttClient.prototype.close = function() {
 
 MqttClient.prototype.exit = function() {
     console.info('exit ...');
-    process.exit(0);
+    //process.exit(0);
 }
 
 module.exports = MqttClient;

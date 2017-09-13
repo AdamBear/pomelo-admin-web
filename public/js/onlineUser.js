@@ -25,11 +25,11 @@ Ext.onReady(function(){
 	    store: userStore,
 	    columns:[
 			{xtype:'rownumberer',width:50,sortable:false},
-			{text:'serverId',width:150,dataIndex:'serverId'},
-			{text:'userName',dataIndex:'username',width:200},
-			{text:'uid',dataIndex:'uid',width:50},
-			{text:'address',dataIndex:'address',width:200},
-			{text:'loginTime',dataIndex:'loginTime',width:200}
+			{text:'服务Id',width:150,dataIndex:'serverId'},
+			{text:'用户名',dataIndex:'username',width:100},
+			{text:'用户id',dataIndex:'uid',width:200},
+			{text:'客户端地址',dataIndex:'address',width:200},
+			{text:'登录时间',dataIndex:'loginTime',width:200}
 		]
 	});
 
@@ -59,6 +59,22 @@ socket.on('connect', function(){
 	});
 });*/
 
+Date.prototype.Format = function (fmt) { //author: meizz
+    var o = {
+        "M+": this.getMonth() + 1, //月份
+        "d+": this.getDate(), //日
+        "h+": this.getHours(), //小时
+        "m+": this.getMinutes(), //分
+        "s+": this.getSeconds(), //秒
+        "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+        "S": this.getMilliseconds() //毫秒
+    };
+    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o)
+        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    return fmt;
+}
+
 setInterval(function() {
 	window.parent.client.request('onlineUser', null, function(err, msg) {
 		if(err) {
@@ -68,21 +84,33 @@ setInterval(function() {
 		}
 
 		var totalConnCount = 0, loginedCount = 0, info, list = [];
+		msg = msg.body;
 		for(var sid in msg) {
 			info = msg[sid];
-			totalConnCount += msg[sid].totalConnCount;
-			loginedCount += msg[sid].loginedCount;
+
+			//totalConnCount += msg[sid].totalConnCount;
+			//loginedCount += msg[sid].loginedCount;
+
+            totalConnCount += msg[sid].loginedCount;
+
+			var users = {};
 			var lists = msg[sid].loginedList;
-			for(var i=0;i<lists.length;i++){
-				list.push({
-					address : lists[i].address,
-					serverId : sid,
-					username : lists[i].username,
-					loginTime : new Date(lists[i].loginTime),
-					uid : lists[i].uid
-				});
-			}
-		}	
+			if(lists)
+				for(var i=0;i<lists.length;i++){
+					var username = lists[i].uid.split('<-->')[0];
+					if(!users[username]) {
+                        users[username] = 1;
+                        loginedCount++;
+                    }
+					list.push({
+						address : lists[i].address,
+						serverId : sid,
+						username : username,
+						loginTime : new Date(lists[i].loginTime).Format("yyyy-MM-dd hh:mm:ss"),
+						uid : lists[i].uid
+					});
+				}
+		}
 
 		contentUpdate(totalConnCount, loginedCount);
 

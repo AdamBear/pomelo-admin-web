@@ -40,4 +40,4 @@ app.get('/module/:mname', function(req, resp) {
 });
 
 app.listen(7001);
-console.log('[AdminConsoleStart] visit http://$' + config.host +'7001');
+console.log('[AdminConsoleStart] visit http://' + config.host +':7001');

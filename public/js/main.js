@@ -12,46 +12,46 @@ Ext.onReady(function() {
 			expanded: true,
 			children: [{
 				id: 'systemInfo',
-				text: 'System Info',
+				text: '系统信息',
 				leaf: true
 			}, {
 				id: 'nodeInfo',
-				text: 'Process Info',
+				text: '进程信息',
 				leaf: true
 			},
 			// {id:'romote',text:'romote',leaf:true},
 			{
 				id: 'qq',
-				text: 'request',
+				text: '请求',
 				expanded: true,
 				children: [{
 					id: 'conRequest',
-					text: 'Conn Request',
+					text: '连接请求',
 					leaf: true
 				}, {
 					id: 'rpcRequest',
-					text: 'Rpc Request',
+					text: 'Rpc调用',
 					leaf: true
 				}, {
 					id: 'forRequest',
-					text: 'Forward Request',
+					text: '转发请求',
 					leaf: true
 				}]
 			}, {
 				id: 'onlineUser',
-				text: 'Online User',
+				text: '在线用户',
 				leaf: true
 			}, {
 				id: 'sceneInfo',
-				text: 'Scene Info',
+				text: '场景信息',
 				leaf: true
 			}, {
 				id: 'scripts',
-				text: 'Scripts',
+				text: '脚本',
 				leaf: true
 			}, {
 				id: 'rpcDebug',
-				text: 'RPC Debug',
+				text: 'RPC调试',
 				leaf: true
 			}/*, {
 				id: 'profiler',
@@ -63,7 +63,7 @@ Ext.onReady(function() {
 
 	// admin consle menu----------------------------------------------------
 	var westpanel = Ext.create('Ext.tree.Panel', {
-		title: 'Menu',
+		title: '菜单',
 		region: 'west',
 		width: 150,
 		store: treeStore,
@@ -100,7 +100,7 @@ Ext.onReady(function() {
 		items: [{
 			region: 'north',
 			height: 40,
-			html: '<body><div style="position:relative;height:40px;line-height:40px;font-size:24px;color:#fff;background:#f8851f url(/ext-4.0.7-gpl/resources/themes/images/custom/icon.png) no-repeat 0 0;border-bottom:1px solid #c66a19;zoom:1;padding-left:48px;">Admin Console</div></body>'
+			html: '<body><div style="position:relative;height:40px;line-height:40px;font-size:24px;color:#fff;background:#f8851f url(/ext-4.0.7-gpl/resources/themes/images/custom/icon.png) no-repeat 0 0;border-bottom:1px solid #c66a19;zoom:1;padding-left:48px;">呼叫服务监控中心</div></body>'
 		},
 		westpanel, centerPanel]
 	});

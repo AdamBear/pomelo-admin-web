@@ -1,5 +1,6 @@
 {
-	"host": "localhost",
+	"host": "127.0.0.1",
+	"--host": "117.25.156.237",
 	"webPort": 8080,
 	"port": 3005,
 	"username": "monitor",
